@@ -1,0 +1,40 @@
+# Imports
+import numpy as np
+import cv2
+
+# Ler a webcam
+cap = cv2.VideoCapture(0)
+
+# Carregar o xml do Haar Cascade - classificador
+face_cascade = cv2.CascadeClassifier('haarcascade_frontalface_default.xml')
+
+# Loop
+while(True):
+
+    # Webcam para frame
+    _, frame = cap.read()
+
+    # Frame em escala de cinza
+    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+
+    # Detecção da face no frame 'gray'
+    faces = face_cascade.detectMultiScale(gray, 1.3,5)
+
+    # Iterar todas as faces no frame
+    for (x,y,w,h) in faces:
+
+        # Colocar o retângulo na face do frame 'frame'
+        cv2.rectangle(frame, (x,y), (x+w, y+h), (200,0,0), 3)
+    
+    # Exibir o frame
+    cv2.imshow('frame', frame)
+
+    # Condição da tecla s
+    if cv2.waitKey(15) & 0xFF == ord('s'):
+        break
+
+
+# fechamento da janela e reinicialização da mesma
+cap.release()
+cv2.destroyAllWindows()
+
